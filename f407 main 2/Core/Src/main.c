@@ -56,6 +56,7 @@ static void MX_CAN1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+// Khai bao bien
 CAN_TxHeaderTypeDef TxHeader;
 CAN_RxHeaderTypeDef RxHeader;
 
@@ -65,23 +66,23 @@ uint8_t RxData[8];
 uint32_t TxMailbox;
 
 int datacheck = 0;
-
+// Ngat ngoai kich hoat nut bam
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if (GPIO_Pin == GPIO_PIN_0)
 	{
 		TxData[0] = 100;   // ms Delay
-		TxData[1] = 40;    // loop rep
+		TxData[1] = 40;    // so lan loop
 
-		HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox);
+		HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox); // Gui thong tin di
 	}
 }
 
-
+// Ngat ngoai khi thong tin ve
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
 	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData);
-	if (RxHeader.DLC == 2)
+	if (RxHeader.DLC == 2) // kiem tra thong tin nhan ve
 	{
 		datacheck = 1;
 	}
@@ -121,8 +122,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_CAN_Start(&hcan1);
 
-  // Activate the notification
-  HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
+  // Kich hoat thong bao
+  HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING); 
 
 
   TxHeader.DLC = 2;  // data length
@@ -139,7 +140,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-			  if (datacheck)
+	  if (datacheck)
 	  {
 		  // blink the LED
 		  for (int i=0; i<RxData[1]; i++)
@@ -151,9 +152,9 @@ int main(void)
 		  datacheck = 0;
 
 			TxData[0] = 100;   // ms Delay
-			TxData[1] = 40;    // loop rep
+			TxData[1] = 40;    // so lan loop
 
-			HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox);
+			HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox); // Gui lai thong tin cho f103
 	  }
   }
   /* USER CODE END 3 */
@@ -237,11 +238,11 @@ static void MX_CAN1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN CAN1_Init 2 */
-
-	CAN_FilterTypeDef canfilterconfig;
+  // Thiet lap bo loc
+  CAN_FilterTypeDef canfilterconfig;
 
   canfilterconfig.FilterActivation = CAN_FILTER_ENABLE;
-  canfilterconfig.FilterBank = 18;  // which filter bank to use from the assigned ones
+  canfilterconfig.FilterBank = 18; 
   canfilterconfig.FilterFIFOAssignment = CAN_FILTER_FIFO0;
   canfilterconfig.FilterIdHigh = 0x103<<5;
   canfilterconfig.FilterIdLow = 0;
@@ -249,7 +250,7 @@ static void MX_CAN1_Init(void)
   canfilterconfig.FilterMaskIdLow = 0x0000;
   canfilterconfig.FilterMode = CAN_FILTERMODE_IDMASK;
   canfilterconfig.FilterScale = CAN_FILTERSCALE_32BIT;
-  canfilterconfig.SlaveStartFilterBank = 21;  // how many filters to assign to the CAN1 (master can)
+  canfilterconfig.SlaveStartFilterBank = 21;
 
   HAL_CAN_ConfigFilter(&hcan1, &canfilterconfig);
 	
