@@ -56,7 +56,7 @@ static void MX_CAN_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+//Khai bao bien
 CAN_TxHeaderTypeDef TxHeader;
 CAN_RxHeaderTypeDef RxHeader;
 
@@ -67,7 +67,7 @@ uint32_t TxMailbox;
 
 int datacheck = 0;
 
-
+// Ngat ngoai khi nhan thong tin ve
 void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
 	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO1, &RxHeader, RxData);
@@ -124,7 +124,7 @@ int main(void)
 
 
   TxData[0] = 200;  // ms delay
-  TxData[1] = 20;  // loop rep
+  TxData[1] = 20;  // so lan loop
 
   /* USER CODE END 2 */
 
@@ -227,7 +227,7 @@ static void MX_CAN_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN CAN_Init 2 */
-
+  // Thiet lap bo loc
   CAN_FilterTypeDef canfilterconfig;
 
   canfilterconfig.FilterActivation = CAN_FILTER_ENABLE;
